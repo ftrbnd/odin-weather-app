@@ -1,0 +1,24 @@
+{
+  "name": "odin-weather-app",
+  "version": "1.0.0",
+  "description": "Project: Weather App (JavaScript Course)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ftrbnd/odin-weather-app.git"
+  },
+  "author": "Giovanni Salas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ftrbnd/odin-weather-app/issues"
+  },
+  "homepage": "https://github.com/ftrbnd/odin-weather-app#readme",
+  "devDependencies": {
+    "webpack": "^5.77.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
