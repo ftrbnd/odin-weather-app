@@ -15,7 +15,7 @@
   \********************/
 /***/ (() => {
 
-eval("const WEATHER_API_KEY = 'e4cd1a6a35cd41f0af7221457233003';\n\nasync function getWeather(location) {\n    const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}?q=${location}`, { mode: 'cors' });\n    const data = await response.json();\n    console.log(data);\n}\n\nconst search = document.querySelector('#search');\nsearch.addEventListener('search', () => {\n    getWeather(search.value);\n});\n\n//# sourceURL=webpack://odin-weather-app/./src/app.js?");
+eval("const WEATHER_API_KEY = 'fdcd0491dfa2497490b215249233003';\r\n\r\nasync function getWeather(location) {\r\n    const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${location}`, { mode: 'cors' });\r\n    const data = await response.json();\r\n    console.log(data);\r\n}\r\n\r\nconst search = document.querySelector('#search');\r\nsearch.addEventListener('search', () => {\r\n    getWeather(search.value);\r\n});\n\n//# sourceURL=webpack://odin-weather-app/./src/app.js?");
 
 /***/ })
 
