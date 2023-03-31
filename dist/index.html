@@ -10,16 +10,24 @@
 </head>
 <body>
     <header>
-        <input type="search" name="search" id="search">
-        <h3 class="location"></h3>
-        <h1 class="temp"></h1>
+        <h3 class="location">...</h3>
+        <h1 class="temp">--</h1>
         <div class="conditions">
-            <p class="condition"></p>
-            <p class="high"></p>
-            <p class="low"></p>
+            <p class="condition">Feels...</p>
+            <p class="high">High</p>
+            <p class="low">Low</p>
         </div>
     </header>
-    <div class="hourly"></div>
+
+    <div class="misc">
+        <input type="search" name="search" id="search" placeholder="Location...">
+    </div>
+
+    <div class="hourly">
+        <h4>Today by the hour</h4>
+        <div class="hours"></div>
+    </div>
+    
     <div class="week">
         <h4>Next week's forecast</h4>
         <div class="days"></div>
