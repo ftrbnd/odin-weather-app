@@ -9,40 +9,151 @@ html, body {
 }
 
 body {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: auto auto;
     align-items: center;
 
-    font-family: Roboto, Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
     background-color:var(--background-color);
     color: var(--text-color);
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 header {
+    grid-row: 1;
+    grid-column: 1;
+    justify-self: start;
+
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    font-size: 4rem;
+    font-size: 2rem;
+}
+
+header > h3, header > h1{
+    margin: 0;
+}
+
+header > h1.temp {
+    font-size: 8rem;
 }
 
 div.conditions {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
+    column-gap: 1rem;
+}
+
+.conditions > p {
+    margin: 0;
 }
 
 p.condition {
     grid-row: 1;
     grid-column: 1 / -1;
+
+    text-align: center;
 }
 
-p.high {
+.conditions > p.high {
     grid-row: 2;
     grid-column: 1;
+
+    font-size: 1rem;
 }
 
-p.low {
+.conditions > p.low {
     grid-row: 2;
     grid-column: 2;
+
+    font-size: 1rem;
+}
+
+div.misc {
+    grid-row: 1;
+    grid-column: 2;
+    align-self: start;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding-top: 8px;
+    padding-right: 8px;
+}
+
+.misc > #search {
+    padding: 4px;
+}
+
+div.hourly {
+    grid-row: 2;
+    grid-column: 1 / -1;
+}
+
+.hourly > h4 {
+    text-align: left;
+    margin: 0;
+}
+
+div.hours {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.hour {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1fr;
+    align-items: center;
+
+    text-align: center;
+}
+
+div.week {
+    grid-row: 3;
+    grid-column: 1;
+    width: 100%;
+}
+
+.week > h4 {
+    text-align: left;
+    margin: 0;
+}
+
+div.days {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+div.day {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    grid-template-columns: 1fr;
+    justify-items: center;
+}
+
+.day > .day-name {
+    grid-row: 1;
+}
+
+.day > .icon {
+    grid-row: 2;
+    margin: 0;
+}
+
+.day > .low {
+    grid-row: 3;
+    margin: 0;
+}
+
+.day > .high {
+    grid-row: 4;
+    margin: 0;
 }
