@@ -4,6 +4,7 @@ import loadHours from "./ui/hours";
 
 const WEATHER_API_KEY = 'fdcd0491dfa2497490b215249233003';
 const USER_LOCATION = 'Los Angeles';
+const DEFAULT_UNIT = 'F';
 
 async function getForecast(location) {
     const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${location}&days=7`, { mode: 'cors' });
@@ -27,6 +28,12 @@ async function main() {
     search.addEventListener('search', async () => {
         const forecastData = await getForecast(search.value);
         loadUI(forecastData);
+    });
+
+    const toggleUnitsBtn = document.querySelector('button.toggle');
+    toggleUnitsBtn.textContent = `°${DEFAULT_UNIT}`;
+    toggleUnitsBtn.addEventListener('click', () => {
+
     });
 }
 
