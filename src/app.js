@@ -29,10 +29,12 @@ async function main() {
 
     console.log(forecastData);
 
-    const search = document.querySelector('#search');
-    search.addEventListener('search', async () => {
-        forecastData = await getForecast(search.value);
+    const searchField = document.querySelector('#search');
+    searchField.addEventListener('search', async () => {
+        forecastData = await getForecast(searchField.value);
         loadUI(forecastData);
+
+        searchField.value = '';
     });
 
     const toggleUnitsBtn = document.querySelector('button.toggle');
