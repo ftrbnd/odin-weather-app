@@ -20,7 +20,7 @@ export default function loadHours(day) {
         iconImage.classList.add('icon');
         iconImage.src = iconUrl;
 
-        const temp = hour.temp_f;
+        const temp = localStorage.getItem('TEMP_UNIT') == 'F' ? hour.temp_f : hour.temp_c;
         const tempText = document.createElement('p');
         tempText.classList.add('hour-temp');
         tempText.textContent = `${temp}°`;

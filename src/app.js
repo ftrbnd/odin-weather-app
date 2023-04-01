@@ -3,8 +3,6 @@ import loadHeader from "./ui/header";
 import loadHours from "./ui/hours";
 
 const WEATHER_API_KEY = 'fdcd0491dfa2497490b215249233003';
-const USER_LOCATION = 'Los Angeles';
-const DEFAULT_UNIT = 'F';
 
 async function getForecast(location) {
     const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${location}&days=7`, { mode: 'cors' });
@@ -21,19 +19,32 @@ function loadUI(forecastData) {
 }
 
 async function main() {
-    const forecastData = await getForecast(USER_LOCATION);
+    if (!localStorage.getItem('TEMP_UNIT')) localStorage.setItem('TEMP_UNIT', 'F');
+    const unit = localStorage.getItem('TEMP_UNIT');
+    if (!localStorage.getItem('LOCATION')) localStorage.setItem('LOCATION', 'Los Angeles');
+    const location = localStorage.getItem('LOCATION');
+
+    let forecastData = await getForecast(location);
     loadUI(forecastData);
+
+    console.log(forecastData);
 
     const search = document.querySelector('#search');
     search.addEventListener('search', async () => {
-        const forecastData = await getForecast(search.value);
+        forecastData = await getForecast(search.value);
         loadUI(forecastData);
     });
 
     const toggleUnitsBtn = document.querySelector('button.toggle');
-    toggleUnitsBtn.textContent = `°${DEFAULT_UNIT}`;
+    toggleUnitsBtn.textContent = `°${unit}`;
     toggleUnitsBtn.addEventListener('click', () => {
+        const currentUnit = localStorage.getItem('TEMP_UNIT');
+        if (currentUnit == 'F') localStorage.setItem('TEMP_UNIT', 'C');
+        else localStorage.setItem('TEMP_UNIT', 'F');
 
+        toggleUnitsBtn.textContent = `°${localStorage.getItem('TEMP_UNIT')}`;
+
+        loadUI(forecastData);
     });
 }
 
