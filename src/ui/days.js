@@ -18,12 +18,12 @@ export default function loadDays(week) {
         iconImage.classList.add('icon');
         iconImage.src = iconUrl;
 
-        const low = `${day.day.mintemp_f}°`
+        const low = `${localStorage.getItem('TEMP_UNIT') == 'F' ? day.day.mintemp_f : day.day.mintemp_c}°`
         const lowText = document.createElement('p');
         lowText.classList.add('low');
         lowText.textContent = low;
 
-        const high = `${day.day.maxtemp_f}°`
+        const high = `${localStorage.getItem('TEMP_UNIT') == 'F' ?  day.day.maxtemp_f : day.day.maxtemp_c}°`
         const highText = document.createElement('p');
         highText.classList.add('high');
         highText.textContent = high;
