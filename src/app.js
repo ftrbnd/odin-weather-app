@@ -13,7 +13,7 @@ async function getForecast(location) {
 function loadUI(forecastData) {
     const [location, current, forecast] = [forecastData.location, forecastData.current, forecastData.forecast];
 
-    loadHeader(location, current, forecast);
+    loadHeader(location, current, forecast.forecastday[0].day);
     loadHours(forecast.forecastday[0].hour);
     loadDays(forecast.forecastday);
 }

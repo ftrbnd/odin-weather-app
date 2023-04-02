@@ -1,6 +1,6 @@
-import dateFormat, { masks } from "dateformat";
+import dateFormat from "dateformat";
 
-export default function loadHeader(location, current, forecast) {
+export default function loadHeader(location, current, forecastToday) {
     const locationName = document.querySelector('h3.location');
     locationName.textContent = location.name;
 
@@ -11,10 +11,10 @@ export default function loadHeader(location, current, forecast) {
     condition.textContent = current.condition.text;
 
     const high = document.querySelector('p.high');
-    high.textContent = `H: ${localStorage.getItem('TEMP_UNIT') == 'F' ? forecast.forecastday[0].day.maxtemp_f : forecast.forecastday[0].day.maxtemp_c}°`;
+    high.textContent = `H: ${localStorage.getItem('TEMP_UNIT') == 'F' ? forecastToday.maxtemp_f : forecastToday.maxtemp_c}°`;
 
     const low = document.querySelector('p.low');
-    low.textContent = `L: ${localStorage.getItem('TEMP_UNIT') == 'F' ? forecast.forecastday[0].day.mintemp_f : forecast.forecastday[0].day.mintemp_c}°`;
+    low.textContent = `L: ${localStorage.getItem('TEMP_UNIT') == 'F' ? forecastToday.mintemp_f : forecastToday.mintemp_c}°`;
 
     const currentDate = new Date(location.localtime);
 
