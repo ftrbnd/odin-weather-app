@@ -7,7 +7,8 @@ const WEATHER_API_KEY = 'fdcd0491dfa2497490b215249233003';
 async function getForecast(location) {
     const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${location}&days=7`, { mode: 'cors' });
     const data = await response.json();
-    return data;
+    
+    return data.error ? null : data;
 }
 
 function loadUI(forecastData) {
@@ -25,14 +26,12 @@ async function main() {
     const location = localStorage.getItem('LOCATION');
 
     let forecastData = await getForecast(location);
-    loadUI(forecastData);
-
-    console.log(forecastData);
+    if (forecastData) loadUI(forecastData);
 
     const searchField = document.querySelector('#search');
     searchField.addEventListener('search', async () => {
         forecastData = await getForecast(searchField.value);
-        loadUI(forecastData);
+        if (forecastData) loadUI(forecastData);
 
         searchField.value = '';
     });
