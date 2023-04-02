@@ -8,6 +8,7 @@ async function getForecast(location) {
     const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${location}&days=7`, { mode: 'cors' });
     const data = await response.json();
     
+    console.log(data);
     return data.error ? null : data;
 }
 
@@ -26,12 +27,19 @@ async function main() {
     const location = localStorage.getItem('LOCATION');
 
     let forecastData = await getForecast(location);
-    if (forecastData) loadUI(forecastData);
+    if (forecastData) {
+        loadUI(forecastData);
+        localStorage.setItem('FORECAST_DATA', JSON.stringify(forecastData));
+    }
 
     const searchField = document.querySelector('#search');
     searchField.addEventListener('search', async () => {
         forecastData = await getForecast(searchField.value);
-        if (forecastData) loadUI(forecastData);
+        if (forecastData) {
+            loadUI(forecastData);
+            localStorage.setItem('FORECAST_DATA', JSON.stringify(forecastData));
+            localStorage.setItem('LOCATION', forecastData.location.name);
+        }
 
         searchField.value = '';
     });
@@ -45,7 +53,7 @@ async function main() {
 
         toggleUnitsBtn.textContent = `°${localStorage.getItem('TEMP_UNIT')}`;
 
-        loadUI(forecastData);
+        loadUI(JSON.parse(localStorage.getItem('FORECAST_DATA'))); // forecastData may be null on searches resulting in null
     });
 }
 
