@@ -8,13 +8,16 @@ async function getForecast(location) {
     const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${location}&days=7`, { mode: 'cors' });
     const data = await response.json();
     
-    console.log(data);
+    console.log('Forecast data: ', data);
     return data.error ? null : data;
 }
 
 function loadUI(forecastData) {
     const [location, current, forecast] = [forecastData.location, forecastData.current, forecastData.forecast];
 
+    localStorage.setItem('FORECAST_DATA', JSON.stringify(forecastData));
+    localStorage.setItem('LOCATION', forecastData.location.name);
+    
     loadHeader(location, current, forecast.forecastday[0].day);
     loadHours(forecast.forecastday[0].hour);
     loadDays(forecast.forecastday);
@@ -26,8 +29,7 @@ function registerEventListeners(forecastData) {
         forecastData = await getForecast(searchField.value);
         if (forecastData) {
             loadUI(forecastData);
-            localStorage.setItem('FORECAST_DATA', JSON.stringify(forecastData));
-            localStorage.setItem('LOCATION', forecastData.location.name);
+            localStorage.setItem('SEARCH_DISPLAYED', 'true');
         }
 
         searchField.value = '';
@@ -47,7 +49,7 @@ function registerEventListeners(forecastData) {
 
     window.addEventListener('keydown', e => {
         if (e.key == '/' && document.activeElement != searchField) {
-            searchField.focus(); // figure out how to delete the '/' entered on search bar
+            searchField.focus();
             e.preventDefault();
         } else if (e.key == 'Escape' && document.activeElement == searchField) {
             searchField.blur();
@@ -64,24 +66,26 @@ function registerEventListeners(forecastData) {
 
 async function setUserLocation() {
     async function success(position) {
-        console.log(`Current coordinates: ${position.coords.latitude},${position.coords.longitude}`);
+        console.log(`Updated current coordinates: ${position.coords.latitude},${position.coords.longitude}`);
         localStorage.setItem('LOCATION', `${position.coords.latitude},${position.coords.longitude}`);
-
-        await loadPage();
+        
+        if (localStorage.getItem('SEARCH_DISPLAYED') == 'false') { // user hasn't searched for something - don't override their search
+            await loadPageData();
+        }
     }
 
-    async function error() {
+    function error() {
         console.log("Unable to retrieve user's location - setting default to Los Angeles");
         localStorage.setItem('LOCATION', 'Los Angeles');
-
-        await loadPage();
     }
 
     if (!navigator.geolocation) {
+        console.log('Geolocation unavailable - setting default location to Los Angeles');
         localStorage.setItem('LOCATION', 'Los Angeles');
-        await loadPage();
     } else {
         document.querySelector('h3.location').textContent = 'Locating...';
+        localStorage.setItem('SEARCH_DISPLAYED', 'false');
+
         navigator.geolocation.watchPosition(success, error, {
             enableHighAccuracy: true,
             timeout: 10000
@@ -89,19 +93,20 @@ async function setUserLocation() {
     }
 }
 
-async function loadPage() {
+async function loadPageData() {
     let forecastData = await getForecast(localStorage.getItem('LOCATION'));
     if (forecastData) {
         loadUI(forecastData);
         localStorage.setItem('FORECAST_DATA', JSON.stringify(forecastData));
     }
-
-    registerEventListeners(forecastData);
 }
 
 async function main() {
     if (!localStorage.getItem('TEMP_UNIT')) localStorage.setItem('TEMP_UNIT', 'F');
     await setUserLocation();
+    await loadPageData();
+
+    registerEventListeners(JSON.parse(localStorage.getItem('FORECAST_DATA')));
 }
 
 main();
