@@ -20,18 +20,7 @@ function loadUI(forecastData) {
     loadDays(forecast.forecastday);
 }
 
-async function main() {
-    if (!localStorage.getItem('TEMP_UNIT')) localStorage.setItem('TEMP_UNIT', 'F');
-    const unit = localStorage.getItem('TEMP_UNIT');
-    if (!localStorage.getItem('LOCATION')) localStorage.setItem('LOCATION', 'Los Angeles');
-    const location = localStorage.getItem('LOCATION');
-
-    let forecastData = await getForecast(location);
-    if (forecastData) {
-        loadUI(forecastData);
-        localStorage.setItem('FORECAST_DATA', JSON.stringify(forecastData));
-    }
-
+function registerEventListeners(forecastData) {
     const searchField = document.querySelector('#search');
     searchField.addEventListener('search', async () => {
         forecastData = await getForecast(searchField.value);
@@ -44,6 +33,7 @@ async function main() {
         searchField.value = '';
     });
 
+    const unit = localStorage.getItem('TEMP_UNIT');
     const toggleUnitsBtn = document.querySelector('button.toggle');
     toggleUnitsBtn.textContent = `°${unit}`;
     toggleUnitsBtn.addEventListener('click', () => {
@@ -69,6 +59,19 @@ async function main() {
             loadUI(JSON.parse(localStorage.getItem('FORECAST_DATA')));
         }
     });
+}
+
+async function main() {
+    if (!localStorage.getItem('TEMP_UNIT')) localStorage.setItem('TEMP_UNIT', 'F');
+    if (!localStorage.getItem('LOCATION')) localStorage.setItem('LOCATION', 'Los Angeles');
+
+    let forecastData = await getForecast(localStorage.getItem('LOCATION'));
+    if (forecastData) {
+        loadUI(forecastData);
+        localStorage.setItem('FORECAST_DATA', JSON.stringify(forecastData));
+    }
+
+    registerEventListeners(forecastData);
 }
 
 main();
