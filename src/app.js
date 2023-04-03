@@ -37,15 +37,29 @@ function registerEventListeners(forecastData) {
     });
 
     const unit = localStorage.getItem('TEMP_UNIT');
-    const toggleUnitsBtn = document.querySelector('button.toggle');
-    toggleUnitsBtn.textContent = `°${unit}`;
-    toggleUnitsBtn.addEventListener('click', () => {
+    const toggleUnitsImage = document.querySelector('img.toggle');
+    toggleUnitsImage.src = unit == 'F' ? 'assets/temperature-fahrenheit.png' : 'assets/temperature-celsius.png';
+    toggleUnitsImage.style.width = '24px';
+    toggleUnitsImage.style.height = '24px';
+
+    toggleUnitsImage.addEventListener('mouseover', () => {
+        toggleUnitsImage.style.cursor = 'pointer';
+        toggleUnitsImage.src = localStorage.getItem('TEMP_UNIT') == 'F' ? 'assets/temperature-fahrenheit-hover.png' : 'assets/temperature-celsius-hover.png';
+    });
+    toggleUnitsImage.addEventListener('mouseout', () => {
+        toggleUnitsImage.style.cursor = 'default';
+        toggleUnitsImage.src = localStorage.getItem('TEMP_UNIT') == 'F' ? 'assets/temperature-fahrenheit.png' : 'assets/temperature-celsius.png';
+    });
+    toggleUnitsImage.addEventListener('mousedown', () => {
         const currentUnit = localStorage.getItem('TEMP_UNIT');
         if (currentUnit == 'F') localStorage.setItem('TEMP_UNIT', 'C');
         else localStorage.setItem('TEMP_UNIT', 'F');
 
-        toggleUnitsBtn.textContent = `°${localStorage.getItem('TEMP_UNIT')}`;
+        toggleUnitsImage.src = localStorage.getItem('TEMP_UNIT') == 'F' ? 'assets/temperature-fahrenheit-click.png' : 'assets/temperature-celsius-click.png';
         loadUI(JSON.parse(localStorage.getItem('FORECAST_DATA'))); // forecastData may be null on searches resulting in null
+    });
+    toggleUnitsImage.addEventListener('mouseup', () => {
+        toggleUnitsImage.src = localStorage.getItem('TEMP_UNIT') == 'F' ? 'assets/temperature-fahrenheit.png' : 'assets/temperature-celsius.png';
     });
 
     window.addEventListener('keydown', e => {
@@ -59,22 +73,23 @@ function registerEventListeners(forecastData) {
             if (e.key.toUpperCase() == localStorage.getItem('TEMP_UNIT')) return;
 
             localStorage.setItem('TEMP_UNIT', e.key.toUpperCase());
-            toggleUnitsBtn.textContent = `°${localStorage.getItem('TEMP_UNIT')}`;
+            toggleUnitsImage.src = localStorage.getItem('TEMP_UNIT') == 'F' ? 'assets/temperature-fahrenheit.png' : 'assets/temperature-celsius.png';
             loadUI(JSON.parse(localStorage.getItem('FORECAST_DATA')));
         }
     });
 
     const curLocationImage = document.querySelector('img.current');
-    curLocationImage.src = 'assets/crosshairs-gps-custom.png';
+    curLocationImage.src = 'assets/crosshairs-gps.png';
     curLocationImage.style.width = '24px';
     curLocationImage.style.height = '24px';
+    
     curLocationImage.addEventListener('mouseover', () => {
         curLocationImage.style.cursor = 'pointer';
         curLocationImage.src = 'assets/crosshairs-gps-hover.png';
     });
     curLocationImage.addEventListener('mouseout', () => {
         curLocationImage.style.cursor = 'default';
-        curLocationImage.src = 'assets/crosshairs-gps-custom.png';
+        curLocationImage.src = 'assets/crosshairs-gps.png';
     });
     curLocationImage.addEventListener('mousedown', () => {
         curLocationImage.src = 'assets/crosshairs-gps-click.png';
@@ -84,7 +99,7 @@ function registerEventListeners(forecastData) {
         console.log('Current location image was clicked');
     });
     curLocationImage.addEventListener('mouseup', () => {
-        curLocationImage.src = 'assets/crosshairs-gps-custom.png';
+        curLocationImage.src = 'assets/crosshairs-gps.png';
     });
 }
 

@@ -93,12 +93,12 @@ div.misc {
     gap: 8px;
 }
 
-button.toggle {
+/* button.toggle {
     cursor: pointer;
     padding: 12px;
     font-size: 1rem;
     border-radius: 10px;
-}
+} */
 
 input#search {
     padding: 12px;
