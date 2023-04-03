@@ -19,7 +19,7 @@ function loadUI(forecastData) {
     localStorage.setItem('LOCATION', forecastData.location.name);
     
     loadHeader(location, current, forecast.forecastday[0].day);
-    loadHours(forecast.forecastday[0].hour);
+    loadHours(forecast.forecastday[0].hour, location.localtime);
     loadDays(forecast.forecastday);
 }
 
