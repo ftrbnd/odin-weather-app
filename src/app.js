@@ -62,6 +62,8 @@ async function main() {
             searchField.blur();
             searchField.value = '';
         } else if ((e.key == 'f' || e.key == 'c') && document.activeElement != searchField) {
+            if (e.key.toUpperCase() == localStorage.getItem('TEMP_UNIT')) return;
+
             localStorage.setItem('TEMP_UNIT', e.key.toUpperCase());
             toggleUnitsBtn.textContent = `°${localStorage.getItem('TEMP_UNIT')}`;
             loadUI(JSON.parse(localStorage.getItem('FORECAST_DATA')));
