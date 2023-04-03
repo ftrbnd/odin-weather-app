@@ -17,7 +17,7 @@ export default function loadHours(day, localtime) {
         time += hourNum > 11 ? 'PM' : 'AM';
         const timeText = document.createElement('p');
         timeText.classList.add('time');
-        timeText.textContent = time;
+        timeText.textContent = hourNum == currentHour ? 'Now' : time;
 
         const iconUrl = hour.condition.icon;
         const iconImage = document.createElement('img');
