@@ -136,6 +136,11 @@ div.hours {
     align-items: center;
 }
 
+div.hours > div:first-child p.time,
+div.hours>div:first-child p.hour-temp {
+    font-weight: bold;
+}
+
 div.hour {
     display: grid;
     grid-template-rows: repeat(3, 1fr);
@@ -158,6 +163,12 @@ div.days {
     display: flex;
     align-items: flex-start;
     gap: 24px;
+}
+
+div.days > div:first-child p.day-name,
+div.days > div:first-child p.high,
+div.days > div:first-child p.low {
+    font-weight: bold;
 }
 
 div.day {
