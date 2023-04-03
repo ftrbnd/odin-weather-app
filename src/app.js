@@ -30,6 +30,7 @@ function registerEventListeners(forecastData) {
         if (forecastData) {
             loadUI(forecastData);
             navigator.geolocation.clearWatch(localStorage.getItem('WATCH_ID'));
+            console.log(`Cleared watch monitor #${localStorage.getItem('WATCH_ID')}`);
         }
 
         searchField.value = '';
