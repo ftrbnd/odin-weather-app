@@ -48,6 +48,7 @@ function registerEventListeners(forecastData) {
     window.addEventListener('keydown', e => {
         if (e.key == '/' && document.activeElement != searchField) {
             searchField.focus(); // figure out how to delete the '/' entered on search bar
+            e.preventDefault();
         } else if (e.key == 'Escape' && document.activeElement == searchField) {
             searchField.blur();
             searchField.value = '';
