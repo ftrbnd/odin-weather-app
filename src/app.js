@@ -29,7 +29,7 @@ function registerEventListeners(forecastData) {
         forecastData = await getForecast(searchField.value);
         if (forecastData) {
             loadUI(forecastData);
-            localStorage.setItem('SEARCH_DISPLAYED', 'true');
+            navigator.geolocation.clearWatch(localStorage.getItem('WATCH_ID'));
         }
 
         searchField.value = '';
@@ -78,8 +78,7 @@ function registerEventListeners(forecastData) {
     curLocationImage.addEventListener('mousedown', () => {
         curLocationImage.src = 'assets/crosshairs-gps-click.png';
 
-        localStorage.setItem('SEARCH_DISPLAYED', 'false');
-        loadPageData();
+        setUserLocation();
 
         console.log('Current location image was clicked');
     });
@@ -93,14 +92,14 @@ async function setUserLocation() {
         console.log(`Updated current coordinates: ${position.coords.latitude},${position.coords.longitude}`);
         localStorage.setItem('LOCATION', `${position.coords.latitude},${position.coords.longitude}`);
         
-        if (localStorage.getItem('SEARCH_DISPLAYED') == 'false') { // user hasn't searched for something - don't override their search
-            await loadPageData();
-        }
+        await loadPageData();
     }
 
-    function error() {
-        console.log("Unable to retrieve user's location - setting default to Los Angeles");
+    async function error(error) {
+        console.log("Unable to retrieve user's location - setting default to Los Angeles", error);
         localStorage.setItem('LOCATION', 'Los Angeles');
+
+        await loadPageData();
     }
 
     if (!navigator.geolocation) {
@@ -108,12 +107,13 @@ async function setUserLocation() {
         localStorage.setItem('LOCATION', 'Los Angeles');
     } else {
         document.querySelector('h3.location').textContent = 'Locating...';
-        localStorage.setItem('SEARCH_DISPLAYED', 'false');
 
-        navigator.geolocation.watchPosition(success, error, {
+        const watchId = navigator.geolocation.watchPosition(success, error, {
             enableHighAccuracy: true,
-            timeout: 10000
+            timeout: 20000
         });
+        localStorage.setItem('WATCH_ID', watchId);
+        console.log(`New watchId: ${watchId}`);
     }
 }
 
