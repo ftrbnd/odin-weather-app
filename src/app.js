@@ -61,10 +61,34 @@ function registerEventListeners(forecastData) {
     });
 }
 
-async function main() {
-    if (!localStorage.getItem('TEMP_UNIT')) localStorage.setItem('TEMP_UNIT', 'F');
-    if (!localStorage.getItem('LOCATION')) localStorage.setItem('LOCATION', 'Los Angeles');
+async function setUserLocation() {
+    async function success(position) {
+        console.log(`Current coordinates: ${position.coords.latitude},${position.coords.longitude}`);
+        localStorage.setItem('LOCATION', `${position.coords.latitude},${position.coords.longitude}`);
 
+        await loadPage();
+    }
+
+    async function error() {
+        console.log("Unable to retrieve user's location - setting default to Los Angeles");
+        localStorage.setItem('LOCATION', 'Los Angeles');
+
+        await loadPage();
+    }
+
+    if (!navigator.geolocation) {
+        localStorage.setItem('LOCATION', 'Los Angeles');
+        await loadPage();
+    } else {
+        document.querySelector('h3.location').textContent = 'Locating...';
+        navigator.geolocation.watchPosition(success, error, {
+            enableHighAccuracy: true,
+            timeout: 10000
+        });
+    }
+}
+
+async function loadPage() {
     let forecastData = await getForecast(localStorage.getItem('LOCATION'));
     if (forecastData) {
         loadUI(forecastData);
@@ -72,6 +96,11 @@ async function main() {
     }
 
     registerEventListeners(forecastData);
+}
+
+async function main() {
+    if (!localStorage.getItem('TEMP_UNIT')) localStorage.setItem('TEMP_UNIT', 'F');
+    await setUserLocation();
 }
 
 main();
