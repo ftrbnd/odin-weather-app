@@ -52,8 +52,20 @@ async function main() {
         else localStorage.setItem('TEMP_UNIT', 'F');
 
         toggleUnitsBtn.textContent = `°${localStorage.getItem('TEMP_UNIT')}`;
-
         loadUI(JSON.parse(localStorage.getItem('FORECAST_DATA'))); // forecastData may be null on searches resulting in null
+    });
+
+    window.addEventListener('keydown', e => {
+        if (e.key == '/' && document.activeElement != searchField) {
+            searchField.focus(); // figure out how to delete the '/' entered on search bar
+        } else if (e.key == 'Escape' && document.activeElement == searchField) {
+            searchField.blur();
+            searchField.value = '';
+        } else if ((e.key == 'f' || e.key == 'c') && document.activeElement != searchField) {
+            localStorage.setItem('TEMP_UNIT', e.key.toUpperCase());
+            toggleUnitsBtn.textContent = `°${localStorage.getItem('TEMP_UNIT')}`;
+            loadUI(JSON.parse(localStorage.getItem('FORECAST_DATA')));
+        }
     });
 }
 
