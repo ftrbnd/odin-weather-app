@@ -62,6 +62,30 @@ function registerEventListeners(forecastData) {
             loadUI(JSON.parse(localStorage.getItem('FORECAST_DATA')));
         }
     });
+
+    const curLocationImage = document.querySelector('img.current');
+    curLocationImage.src = 'assets/crosshairs-gps-custom.png';
+    curLocationImage.style.width = '24px';
+    curLocationImage.style.height = '24px';
+    curLocationImage.addEventListener('mouseover', () => {
+        curLocationImage.style.cursor = 'pointer';
+        curLocationImage.src = 'assets/crosshairs-gps-hover.png';
+    });
+    curLocationImage.addEventListener('mouseout', () => {
+        curLocationImage.style.cursor = 'default';
+        curLocationImage.src = 'assets/crosshairs-gps-custom.png';
+    });
+    curLocationImage.addEventListener('mousedown', () => {
+        curLocationImage.src = 'assets/crosshairs-gps-click.png';
+
+        localStorage.setItem('SEARCH_DISPLAYED', 'false');
+        loadPageData();
+
+        console.log('Current location image was clicked');
+    });
+    curLocationImage.addEventListener('mouseup', () => {
+        curLocationImage.src = 'assets/crosshairs-gps-custom.png';
+    });
 }
 
 async function setUserLocation() {
