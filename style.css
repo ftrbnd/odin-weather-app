@@ -101,6 +101,7 @@ div.misc {
 } */
 
 input#search {
+    border: 0;
     padding: 12px;
     width: 250px;
     font-size: 1rem;
