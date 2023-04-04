@@ -24,6 +24,10 @@ header {
     justify-items: end;
 }
 
+.region {
+    margin: 0;
+}
+
 .current {
     grid-row: 1;
     grid-column: 1;
