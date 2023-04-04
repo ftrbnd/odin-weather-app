@@ -1,6 +1,7 @@
 :root {
     --background-color: rgb(51, 51, 51);
     --text-color: rgb(204, 204, 204);
+    --footer-color: rgb(127, 127, 127);
 }
 
 html, body {
@@ -11,17 +12,18 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    gap: 16px;
 
     font-family: 'Helvetica Neue', Helvetica, sans-serif;
     background-color:var(--background-color);
     color: var(--text-color);
-    padding: 25px;
 }
 
 header {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     justify-items: end;
+    padding: 25px 25px 0 25px;
 }
 
 .current {
@@ -123,7 +125,8 @@ div.hourly {
     display: flex;
     flex-direction: column;
 
-    width: 100%;
+    width: min-content;
+    padding: 0 25px 0 25px;
 }
 
 .hourly > h4 {
@@ -133,6 +136,7 @@ div.hourly {
 
 div.hours {
     display: flex;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -151,7 +155,8 @@ div.hour {
 }
 
 div.week {
-    width: 100%;
+    width: min-content;
+    padding: 0 25px 0 25px;
 }
 
 .week > h4 {
@@ -195,4 +200,18 @@ div.day {
 .day > .high {
     grid-row: 4;
     margin: 0;
+}
+
+footer {
+    align-self: stretch;
+    background-color: var(--footer-color);
+    padding: 0;
+}
+
+footer p {
+    text-align: center;
+}
+
+.footer-link {
+    color: inherit;
 }
