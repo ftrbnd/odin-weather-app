@@ -135,11 +135,18 @@ async function setUserLocation() {
     }
 }
 
+function setBackground(forecastData) {
+    const conditionCode = forecastData.current.condition.code;
+    const currentHour = new Date(forecastData.location.localtime).getHours();
+    // day: 6am - 6pm, night: 7pm - 5am
+    console.log(conditionCode, currentHour);
+}
+
 async function loadPageData() {
     let forecastData = await getForecast(localStorage.getItem('LOCATION'));
     if (forecastData) {
         loadUI(forecastData);
-        localStorage.setItem('FORECAST_DATA', JSON.stringify(forecastData));
+        setBackground(forecastData);
     }
 }
 
