@@ -19,7 +19,7 @@ function loadUI(forecastData) {
     localStorage.setItem('LOCATION', forecastData.location.name);
     
     loadHeader(location, current, forecast.forecastday[0].day);
-    loadHours(forecast.forecastday[0].hour, location.localtime);
+    loadHours(forecast.forecastday[0].hour, forecast.forecastday[1].hour, location.localtime);
     loadDays(forecast.forecastday);
 }
 
@@ -94,6 +94,8 @@ function registerEventListeners(forecastData) {
     curLocationImage.addEventListener('mousedown', () => {
         curLocationImage.src = 'assets/crosshairs-gps-click.png';
 
+        navigator.geolocation.clearWatch(localStorage.getItem('WATCH_ID'));
+        console.log(`Cleared watch monitor #${localStorage.getItem('WATCH_ID')}`);
         setUserLocation();
 
         console.log('Current location image was clicked');
