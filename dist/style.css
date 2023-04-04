@@ -58,7 +58,25 @@ header {
     margin: 0;
 }
 
-.current > h1.temp {
+.temp-container {
+    display: grid;
+    grid-row: 1fr;
+    grid-column: 1fr 1fr;
+
+    align-items: center;
+}
+
+.temp-container .today-icon {
+    grid-column: 1;
+    grid-row: 1;
+
+    height: 96px;
+}
+
+.temp {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
     font-size: 8rem;
 }
 

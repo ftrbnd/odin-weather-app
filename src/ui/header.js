@@ -9,6 +9,9 @@ export default function loadHeader(location, current, forecastToday) {
 
     const temp = document.querySelector('.temp');
     temp.textContent = `${localStorage.getItem('TEMP_UNIT') == 'F' ? Math.round(current.temp_f) : Math.round(current.temp_c)}°`;
+    
+    const tempIcon = document.querySelector('.temp-container .today-icon');
+    tempIcon.src = current.condition.icon;
 
     const condition = document.querySelector('.condition');
     condition.textContent = current.condition.text;
