@@ -21,9 +21,21 @@ body {
 
 header {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     justify-items: end;
     padding: 25px 25px 0 25px;
+}
+
+.details {
+    grid-row: 1;
+    grid-column: 1;
+    place-self: start;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    font-size: 1rem;
 }
 
 .region {
@@ -32,8 +44,8 @@ header {
 
 .current {
     grid-row: 1;
-    grid-column: 1;
-    justify-self: start;
+    grid-column: 2;
+    justify-self: center;
 
     display: flex;
     flex-direction: column;
@@ -86,7 +98,7 @@ p.condition {
 
 div.misc {
     grid-row: 1;
-    grid-column: 2;
+    grid-column: 3;
     align-self: start;
 
     display: flex;
@@ -131,7 +143,7 @@ div.hourly {
     display: flex;
     flex-direction: column;
 
-    width: min-content;
+    width: fit-content;
     padding: 0 25px 0 25px;
 }
 
@@ -144,6 +156,7 @@ div.hours {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 div.hours > div:first-child p.time,
@@ -212,6 +225,7 @@ footer {
     align-self: stretch;
     background-color: var(--footer-color);
     padding: 0;
+    width: inherit;
 }
 
 footer p {
