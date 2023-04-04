@@ -26,4 +26,20 @@ export default function loadHeader(location, current, forecastToday) {
     
     const time = document.querySelector('.time');
     time.textContent = dateFormat(currentDate, "h:MM TT");
+
+    // more details (wind, precip, pressure)
+    const directions = new Map([
+        ['N', 'north'],
+        ['E', 'east'],
+        ['S', 'south'],
+        ['W', 'west']
+    ]);
+    const wind = document.querySelector('.wind');
+    wind.textContent = `Wind: ${localStorage.getItem('TEMP_UNIT') == 'F' ? current.wind_mph : current.wind_kph} ${localStorage.getItem('TEMP_UNIT') == 'F' ? 'mph' : 'kmh'} ${directions.get(current.wind_dir)}`;
+
+    const precipitation = document.querySelector('.precipitation');
+    precipitation.textContent = `Precipitation: ${localStorage.getItem('TEMP_UNIT') == 'F' ? current.precip_in : current.precip_mm} ${localStorage.getItem('TEMP_UNIT') == 'F' ? 'in' : 'mm'}`;
+
+    const pressure = document.querySelector('.pressure');
+    pressure.textContent = `Pressure: ${localStorage.getItem('TEMP_UNIT') == 'F' ? current.pressure_in : current.pressure_mb} ${localStorage.getItem('TEMP_UNIT') == 'F' ? 'in' : 'mb'}`;
 }
