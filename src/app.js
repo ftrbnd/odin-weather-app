@@ -94,6 +94,8 @@ function registerEventListeners(forecastData) {
     curLocationImage.addEventListener('mousedown', () => {
         curLocationImage.src = 'assets/crosshairs-gps-click.png';
 
+        navigator.geolocation.clearWatch(localStorage.getItem('WATCH_ID'));
+        console.log(`Cleared watch monitor #${localStorage.getItem('WATCH_ID')}`);
         setUserLocation();
 
         console.log('Current location image was clicked');
