@@ -21,6 +21,7 @@ function loadUI(forecastData) {
     loadHeader(location, current, forecast.forecastday[0].day);
     loadHours(forecast.forecastday[0].hour, forecast.forecastday[1].hour, location.localtime);
     loadDays(forecast.forecastday);
+    setBackground(location, current);
 }
 
 function registerEventListeners(forecastData) {
@@ -135,18 +136,46 @@ async function setUserLocation() {
     }
 }
 
-function setBackground(forecastData) {
-    const conditionCode = forecastData.current.condition.code;
-    const currentHour = new Date(forecastData.location.localtime).getHours();
+function setBackground(location, current) {
+    const conditionCode = current.condition.code;
+    const currentTemp = current.temp_c;
+    const currentHour = new Date(location.localtime).getHours();
     // day: 6am - 6pm, night: 7pm - 5am
-    console.log(conditionCode, currentHour);
+    console.table(conditionCode, currentHour, currentTemp);
+
+    switch (true) { // calculated with Celsius - doesn't matter since user doesn't read this
+        case currentTemp < 0:
+            setColor('navy', 'gray');
+            break;
+        case 0 <= currentTemp && currentTemp < 15:
+            setColor('lightblue', 'white');
+            break;
+        case 15 <= currentTemp && currentHour < 20:
+            setColor('green', 'gray');
+            break;
+        case 20 <= currentTemp && currentHour < 25:
+            setColor('yellow', 'darkgray');
+            break;
+        case 25 <= currentTemp && currentHour < 30:
+            setColor('orange', 'white');
+            break;
+        case 30 <= currentTemp:
+            setColor('red', 'beige');
+            break;
+        default:
+            console.log('hi');
+    }
+    
+    function setColor(textColor, backgroundColor) {
+        console.log(`textColor: ${textColor}, backgroundColor: ${backgroundColor}`);
+        // start setting colors accordingly
+    }
 }
 
 async function loadPageData() {
     let forecastData = await getForecast(localStorage.getItem('LOCATION'));
     if (forecastData) {
         loadUI(forecastData);
-        setBackground(forecastData);
     }
 }
 
