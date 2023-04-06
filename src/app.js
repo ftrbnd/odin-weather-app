@@ -21,7 +21,7 @@ function loadUI(forecastData) {
     loadHeader(location, current, forecast.forecastday[0].day);
     loadHours(forecast.forecastday[0].hour, forecast.forecastday[1].hour, location.localtime);
     loadDays(forecast.forecastday);
-    setBackground(location, current);
+    setColors(location.localtime, current.condition.code);
 }
 
 function registerEventListeners(forecastData) {
@@ -136,39 +136,94 @@ async function setUserLocation() {
     }
 }
 
-function setBackground(location, current) {
-    const conditionCode = current.condition.code;
-    const currentTemp = current.temp_c;
-    const currentHour = new Date(location.localtime).getHours();
-    // day: 6am - 6pm, night: 7pm - 5am
-    console.table(conditionCode, currentHour, currentTemp);
+function setColors(localtime, conditionCode) {
+    const niceDays = [1000, 1003, '#FFFFFF', '#00ABFF']; // text color, background color
+    const cloudyDays = [1006, 1009, 1030, 1135, '#FFFFFF', '#B5B5B5'];
+    const rainyDays = [1063, 1072, 1150, 1153, 1168, 1171, 1180, 1183, 1186, 1189, 1192, 1195, 1198, 1201, 1240, 1243, 1246, '#4275E9', '#878787'];
+    const snowyDays = [1066, 1069, 1114, 1117, 1147, 1204, 1207, 1210, 1213, 1216, 1219, 1222, 1225, 1237, 1249, 1252, 1255, 1258, 1261, 1264, '#3FCDF1', '#FFFFFF'];
+    const stormyDays = [1087, 1273, 1276, 1279, 1282, '#FFE400', '#878787'];
 
-    switch (true) { // calculated with Celsius - doesn't matter since user doesn't read this
-        case currentTemp < 0:
-            setColor('navy', 'gray');
-            break;
-        case 0 <= currentTemp && currentTemp < 15:
-            setColor('lightblue', 'white');
-            break;
-        case 15 <= currentTemp && currentHour < 20:
-            setColor('green', 'gray');
-            break;
-        case 20 <= currentTemp && currentHour < 25:
-            setColor('yellow', 'darkgray');
-            break;
-        case 25 <= currentTemp && currentHour < 30:
-            setColor('orange', 'white');
-            break;
-        case 30 <= currentTemp:
-            setColor('red', 'beige');
-            break;
-        default:
-            console.log('hi');
+    const body = document.querySelector('body');
+    if (niceDays.includes(conditionCode)) {
+        const textColor = niceDays[niceDays.length - 2];
+        const backgroundColor = niceDays[niceDays.length - 1];
+
+        body.style.color = textColor;
+        body.style.backgroundColor = backgroundColor;
+        console.log(`text color: ${textColor}, back: ${backgroundColor}`);
+        darkenColors(textColor, backgroundColor);
+        console.log(`DARK: text color: ${textColor}, back: ${backgroundColor}`);
+    } else if (cloudyDays.includes(conditionCode)) {
+        const textColor = cloudyDays[cloudyDays.length - 2];
+        const backgroundColor = cloudyDays[cloudyDays.length - 1];
+
+        body.style.color = textColor;
+        body.style.backgroundColor = backgroundColor;
+        darkenColors(textColor, backgroundColor);
+    } else if (rainyDays.includes(conditionCode)) {
+        const textColor = rainyDays[rainyDays.length - 2];
+        const backgroundColor = rainyDays[rainyDays.length - 1];
+
+        body.style.color = textColor;
+        body.style.backgroundColor = backgroundColor;
+        darkenColors(textColor, backgroundColor);
+    } else if (snowyDays.includes(conditionCode)) {
+        const textColor = snowyDays[snowyDays.length - 2];
+        const backgroundColor = snowyDays[snowyDays.length - 1];
+        
+        body.style.color = textColor;
+        body.style.backgroundColor = backgroundColor;
+        darkenColors(textColor, backgroundColor);
+    } else if (stormyDays.includes(conditionCode)) {
+        const textColor = stormyDays[stormyDays.length - 2];
+        const backgroundColor = stormyDays[stormyDays.length - 1];
+        
+        body.style.color = textColor;
+        body.style.backgroundColor = backgroundColor;
+        darkenColors(textColor, backgroundColor);
     }
+
+    const footer = document.querySelector('footer');
+    footer.style.color = 'white';
+    footer.style.backgroundColor = 'rgb(127, 127, 127)';
+
+    function darkenColors(textColor, backgroundColor) {
+        const currentHour = new Date(localtime).getHours();
+        if (18 < currentHour || currentHour < 6) { // darken colors during nighttime
+            body.style.color = LightenDarkenColor(textColor)
+            body.style.backgroundColor = LightenDarkenColor(backgroundColor, -20)
+        }
+    }
+
+    // https://css-tricks.com/snippets/javascript/lighten-darken-color/
+    function LightenDarkenColor(col, amt) {
+        if (col == '#FFFFFF') return;
+
+        let usePound = false;
     
-    function setColor(textColor, backgroundColor) {
-        console.log(`textColor: ${textColor}, backgroundColor: ${backgroundColor}`);
-        // start setting colors accordingly
+        if (col[0] == "#") {
+            col = col.slice(1);
+            usePound = true;
+        }
+    
+        let num = parseInt(col,16);
+    
+        let r = (num >> 16) + amt;
+    
+        if (r > 255) r = 255;
+        else if  (r < 0) r = 0;
+    
+        let b = ((num >> 8) & 0x00FF) + amt;
+    
+        if (b > 255) b = 255;
+        else if  (b < 0) b = 0;
+    
+        let g = (num & 0x0000FF) + amt;
+    
+        if (g > 255) g = 255;
+        else if (g < 0) g = 0;
+    
+        return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
     }
 }
 
